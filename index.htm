@@ -1,0 +1,287 @@
+<html>
+	<head>
+		<title>Michael McMillan</title>
+		<meta charset="utf-8">
+		<link href='http://fonts.googleapis.com/css?family=Poly:400,400italic' rel='stylesheet' type='text/css'>
+		<style>
+		
+		/* General */
+		
+		body {
+			background: #ddd;
+			color: #444;
+			font: 14px 'Poly', georgia, serif;
+			line-height: 1.5;
+			font-weight: lighter;
+		}
+		
+		a:link, a:visited, a:active {
+			color:#888;
+			text-decoration:none;
+		}
+		
+		.container {
+			position: relative;
+			display:block;
+			width: 700px;
+			
+			margin-top:30px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		
+		/* Top-part */
+		
+		.header {
+			width:700px;
+			margin-top: 30px;
+			margin-bottom:15px;
+		}
+		
+		.signature {
+			
+		}
+		
+		.navigation {
+			display: block;
+			text-align: left;
+			float: right;
+			line-height: 50px;
+			padding-top:30px;
+		}
+		
+		.navigation li {
+			display: inline;
+			padding-left: 20px;
+			color: #888;
+			font-size:14px;
+			font-family: helvetica, sans-serif;
+			font-weight: lighter;
+		}
+		
+		.navigation li[active] {
+			font-style:italic;
+		}
+		
+		/* Middle-part */
+		
+		.posts {
+			background:white;
+			margin-bottom:60px;
+		}
+		
+		/* Post */
+		.post {
+			margin-bottom:30px;
+			
+		}
+		
+		.post .title {
+			font: 14px 'Poly', georgia, serif;
+			color: #040404;
+			line-height: 1.5;
+			padding: 10px 30px 0px 40px;
+			font-size: 350%;
+			font-weight: 100;
+			margin-bottom:10px;
+			margin-top:20px;
+		}
+		
+		.post .date {
+			display: inline-block;
+			border: 1px solid rgba(0,0,0,0.05);
+			border-left: none;
+			border-right: none;
+			padding: 10px 10px 10px 40px;
+			color: #ccc;
+			font-size:16px;
+			font-weight:lighter;
+		}
+		
+		.post .content {
+			color: #444;
+			font: 18px 'Poly', georgia, serif;
+			line-height: 1.5;
+			font-variant: normal;
+			font-weight: 100;
+			padding: 0px 30px 0px 40px;
+			-webkit-font-smoothing: antialiased;
+			padding-bottom:30px;
+		}
+		
+		.post blockquote {
+			font-family: 'Poly', georgia;
+		    font-style:italic;
+		    background:transparent url(img/quotation-mark.png) no-repeat;
+		    padding:0em 0em 0em 30px;
+		    margin: 30px 0px 30px -30px;
+		    color: #666055;
+		    text-rendering: optimizelegibility;		
+		}
+		
+		.post .image {
+			height:300px;
+			width:100%;
+			position: relative;
+		}
+		
+		.post .credit {
+			position:absolute;
+			
+			background: rgba(0, 0, 0, 0.7);
+			/*color:#444;*/
+			color:white;
+			bottom: 0; right: 0;
+			margin-bottom:0px;
+			padding-left:5px;
+			padding-right:5px;
+		}
+		
+		.post .credit a {
+			color:white;
+		}
+	
+		</style>
+	</head>
+	<body>
+	   <div class="container">
+		   <div class="header">
+			   <img class="signature" src="img/signature.png" width="200" height="90">
+			   
+			   <ul class="navigation">
+				   <li active><a href="/">Thoughts</a></li>
+				   <li><a href="/projects.htm">Projects</a></li>	  
+			   </ul>
+		   </div>
+
+		   <div class="posts">
+			   
+			   <div class="post" >
+				   <div class="image" style="background-image:url('img/hoc_topp.jpg')"></div>
+				   <h1 class="title">House of Cards</h1>
+				   <div class="date">Des 5, 2013</div>
+				   <div class="content">
+					   <p>
+							 Season two of Netflix's <i>House of Cards</i> will premiere on the 14th of February, 2014!
+					   </p>
+				   </div>
+			   </div>
+			   
+			   <div class="post" >
+				   <div class="image" style="background-image:url('img/library.jpg')">
+					   <p class="credit">
+						   <a href="http://www.flickr.com/people/pixelhut/">Chris Guy / Pixelhut</a> / Licenced under <a href="http://creativecommons.org/licenses/by-nc/2.0/">NC BY 2.0</a>
+					   </p>
+				   	</div>
+				   <h1 class="title">Referencing sucks</h1>
+				   <div class="date">Des 1, 2013</div>
+				   <div class="content">
+					   <p>
+						   Paul Graham's essays are always entertaining to read. My favourite essay, which I also try 
+						   to keep in the back of my head whenever a "brilliant" idea comes along, is <i>How to Get Startup Ideas</i>.
+					   </p>
+					   
+					   <blockquote>
+						   The way to get startup ideas is not to try to think of startup ideas. It's to look for problems,
+						   preferably problems you have yourself.
+					   </blockquote>
+					   
+					   <p>
+						   One week ago I decided to solve a problem which has been an annoyance for a long time:
+						   Referencing. Throughout high-school, being able to reference books, articles and websites is 
+						   an important part of the curriculum. Failing to do so will almost certainly negativly affect
+						   your grade.
+					   </p>
+					   
+					   <p>
+						   In combination with Bootstrap, Angular, a simple crawler, a MySQL-backend glued together with a REST API and
+						   some good ol' elbow grease - LittList was born. LittList lets you search for books by author, title, ISBN or
+						   content, in a huge database consisting of metadata for books. The student then proceeds by adding the references
+						   that were used. Lastly the student clicks <i>Generate</i> and a properly formatted bibliography is returned.
+					   </p>
+					   
+					   <p>
+						   I launched the site on the evening of the 24th of November by posting the link to a couple of private Facebook Groups.
+						   The response was overwhelmingly positive! I quickly received a lot of feedback regarding the
+						   technical implementation and the general userinterface. It was extremely fun, not to mention addictive,
+						   to monitor the traffic in realtime with Piwik, and getting appreciative e-mails. In the course of 5 days 
+						   the site had received about 5.2 thousand unique visitors and over 4.8 thousand bibliographies had been generated.
+					   </p>
+					   
+					   <p>
+						   It did not take long before other websites started noticing the post on Facebook, which was rapidly gaining
+						   traction (in the form of likes and comments). As a result, StudentTorget.no published an article which led
+						   to even more traffic. Due to a relativly poor and inconsiderate programmed crawler, the CPU of the server
+						   LittList was hosted on started to choke. Luckily, I managed to resolve the issue before crashing the entire box.
+					   </p>
+					   
+					   <p>
+						   Even though only one week has passed, it has been very rewarding to hear that LittList actually helps students
+						   who are fed up with spending time formatting bibliographies. I guess writing the assignment/paper in the first place
+						   is boring enough.
+					   </p>
+				   </div>
+			   </div>
+			   
+			   
+			   <div class="post">
+				   <div class="image" style="background-image:url('img/hovedbygget.jpg')">
+				   	<p class="credit">
+						<a href="http://www.flickr.com/photos/larsjuh/">Larsjuhc</a> / Licenced under <a href="http://creativecommons.org/licenses/by/2.0/deed.en">CC BY 2.0</a>
+					</p>
+				   </div>
+				   <h1 class="title">Trondheim</h1>
+				   <div class="date">Nov 27, 2013</div>
+				   <div class="content">
+					   <p>
+						   It would be an understatement to say that I'm <i>excited</i> for what my time in Trondheim
+						   will bring. Being able to study Computer Science has been a long-term goal, thus being
+						   accepted at NTNU is undoubtely a huge achievement for me.
+					   </p>
+					  
+					   <p>
+						   One of the first things I noticed in Trondheim was the great diversety within extracurricular
+						   activites you could take part in. There is literally something for everyone. I was by coincidence
+						   introduced to two programs in late September: AppLab and SPARK.
+					   </p>
+					   
+					   <p>
+						  Both of these programs aims to guide and mentor students with startup-ideas towards a
+						  minimum viable product. I chose to participate in both of them, as AppLab mainly focuses on
+						  building an app for mobile platforms, and SPARK provides tight follow-ups and personal advisory from 
+						  an NSE-student [1].
+					   </p>
+					  
+					   <p>
+						  In retrospect I can safely say that I feel very much at home in Trondheim. Being given the opportunity 
+						  to work on an idea - whether it's good or bad - is extremely rewarding and fun! It's a shame that programs
+						  which try to encourage innovation only seem to be available at university. I would have loved to attend 
+						  something similar in high-school.
+					   </p>
+					   
+					   <p>
+						   I'm really looking forward to the following years.
+					   </p>
+				   </div>
+			   </div>
+		   </div>
+	   </div>
+	   
+	   <!-- Piwik -->
+	   <script type="text/javascript">
+	     var _paq = _paq || [];
+	     _paq.push(["trackPageView"]);
+	     _paq.push(["enableLinkTracking"]);
+
+	     (function() {
+	       var u=(("https:" == document.location.protocol) ? "https" : "http") + "://kilde.michaelmcmillan.net/piwik/";
+	       _paq.push(["setTrackerUrl", u+"piwik.php"]);
+	       _paq.push(["setSiteId", "2"]);
+	       var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+	       g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+	     })();
+	   </script>
+	   <!-- End Piwik Code -->
+	   
+	</body>
+</html>
