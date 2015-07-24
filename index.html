@@ -19,6 +19,220 @@
     </head>
     <body>
         <pre>
+24/07/2015 - Red-green-refactor? 
+
+Last Christmas I decided to give TDD a try after being inspired from
+Gary Bernhardts screencasts at DestroyAllSoftware.com and reading
+Robert C. Martins book "Clean code". After overcoming the
+counterintuitive nature of writing tests before the actual code, I
+discovered that TDD improves my productivity and overall confidence in
+the code I write.
+
+In this post I try to define what I regard as a good test, why I like
+practicing TDD and why integration tests are not that useful. Most of
+the ideas in here are borrowed from Robert C. Martin, Gary Bernhardt,
+Martin Fowler and Kent Beck.
+
+# What to test? 
+
+TDD is hard. 7 months in I still find it difficult to write valuable
+tests. This is actually the biggest challenge you'll run into when
+starting out: What tests should should you write? There is no definite
+answer, but I've found that testing code that I have a tendency to
+screw up is a good way to start.  However, that's a pretty pretty
+vague and relative heurustic so let me demonstrate what I would
+describe as a worthless test:
+
+    describe('Person', () => {
+        describe('name', () => {
+            it('should be possible to set', () => {
+                var mike  = new Person();
+                mike.name = 'Michael';
+                assert.equal(mike.name, 'Michael');
+            });
+        });
+    });
+
+In order to screw up the logic that makes this test pass I would
+somehow have to mess up the setter-method of the name-field in the
+Person class. I find that unlikely and therefore consider this test as
+unnecessary. This becomes even clearer if write the code that makes
+that test pass.
+
+    class Person {
+
+    }
+
+That's it. The test would now pass. In other words: The sole existence
+of the Person class is enough to pass this test. Let's look at
+different example of a test I consider more valuable.
+
+    describe('Person', () => {
+        describe('name', () => {
+            it('should be separated by whitespace if first and last name is set', () => {
+                var mike = new Person(); 
+                mike.firstName = 'Michael';
+                mike.lastName  = 'McMillan';
+                assert.equal(mike.name, 'Michael McMillan');
+            });
+
+            it('should only return first name if last name is not set', () => {
+                var michelle = new Person(); 
+                michelle.firstName = 'Michelle';
+                assert.equal(michelle.name, 'Michelle');
+            });
+
+            it('should only return last name if first name is not set', () => {
+                var mcLovin = new Person(); 
+                mcLovin.lastName = 'McLovin';
+                assert.equal(mcLovin.name, 'McLovin');
+            });
+        });
+    });
+
+This code would pass that test [1]. 
+
+    class Person {
+        get name () {
+            return ((this.firstName || '') + ' ' + (this.lastName || '')).trim();
+        }
+    }
+
+Although this may seem like a no-brainer, it's not something I want my
+code to mess up. I want confidence in that a persons name is properly
+formatted throughout my application. This test will ensure that. If
+anyone were to mess around with that code at least one of those tests
+would necesarrily fail and hopefully divert a bug entering the code.
+
+# Monstrous tests 
+
+Practicing TDD implies unit testing. Unit testing is hard to define
+and I don't want to be pissing on anyones bonfire [2], so I'll rather
+just piggyback off Gary Bernhardts definition: A unit test is when
+"Other classes cant break [the test]". In the previous example no
+other class can interfere with the result of our test because we are
+only testing the only relevant class: Person.  For that reason we can
+claim that we are testing the logic of a Persons name in *isolation*.
+
+It is perfectly fine to write tests that are not unit tests, I just
+find them to be a lot less valuable, especially system tests, also
+known as integration tests. TDD provides you regression, design and
+easier refactoring. Integration tests on the other hand can only tell
+you if you have broken something (regression) somewhere in the stack.
+Not to mention they take a lot of time to run.
+
+Imagine you have an application exposing a REST API over HTTP. In
+fact, let's pretend it's the same application as the one containing
+the Person class above. Had we written an integration test instead of
+a unit test our test would probably look something like this.
+
+    describe('Person', () => {
+        describe('name', () => {
+            it('should be separated by whitespace if first and last name is set', (done) => {
+                request
+                .post('http://localhost:5000/api/person')
+                .send({ firstName: 'Michael', lastName: 'McMillan' })
+                .end(function(err, res){
+                    var mike = res.request.toJSON();
+                    assert.equal(mike.name, 'Michael McMillan');
+                    done();
+                });
+            });
+        });
+    });
+
+Although we are testing the same logic as before, we are dependent on
+a whole lot of classes and dependencies to not break us. More
+specifically: The web server/proxy (nginx/Apache), the router
+(Express), (perhaps) the database and the HTTP client. Additionally it
+takes a lot more time to complete this test.  In fact, without mocking
+the network layer this is what would happen behind the scene when
+running it [3]:
+
+    1. Client/Server establishes a TCP socket (handshake)
+    2. Client POSTs the HTTP request 
+    3. Server receives HTTP request
+    4. Server parses HTTP request and routes to correct controller
+    5. Controller constructs a new Person class with request parameters 
+    6. Person class applies logic to return the name correctly
+    7. Sever responds to client with a JSON serialized Person object
+    8. Client parses response and asserts that the name is correct
+
+If one of the steps above fail we've been broken by code that
+essentially has nothing to do with the actual logic we're testing: A
+Persons first and last name should be separated with whitespace.
+However, this won't go unoticed: Our test will kindly inform us that
+it didn't pass, from there we need to dig through the entire stack in
+order to hunt down the bug that broke the test. It could be anywhere,
+it could even be located in code we haven't written ourselves.
+
+# There's a pattern here somewhere ...
+
+TDD forces you to focus on the application specific logic. If you were
+told to create a web application that had a simple HTML form that
+POST'ed a word to the backend and responded with the a Scrabble score,
+where would you start?
+
+I think most developers would get so disorientated by the word "web
+application" that they'd start by installing a web framework like Ruby
+on Rails, Sails.js/Express or Laravel and start configuring routes and
+controllers in order to complete the task.
+
+But by practicing TDD (or Unit Testing for that matter) you would be
+forced to start with writing a simple test.  Something along these
+lines is probably where you'd start: 
+
+    describe('Scrabble', () => {
+        describe('score', () => {
+            it('should be 0 for empty word', () => {
+                var word = new ScrabbleWord(' ');
+                assert.equal(word.score, 0);
+            }); 
+
+            it('should be 20 for the word "quick"', () => {
+                var word = new ScrabbleWord('quick');
+                assert.equal(word.score, 20);
+            }); 
+
+            it('should be 20 for the word "quick" in capital letters', () => {
+                var word = new ScrabbleWord('QUICK');
+                assert.equal(word.score, 20);
+            }); 
+
+            it('should be 20 for the word "quick" reversed', () => {
+                var word = new ScrabbleWord('KCIUQ');
+                assert.equal(word.score, 20);
+            }); 
+        }); 
+    });
+
+As you can see our test is completely agnostic as to whether this is a
+web application or not. This test has essentially helped us separate
+the business logic of calculating Scrabble scores from the I/O channel
+(HTTP). Imagine if the next task was to transform this Scrabble
+calculator into an IRC bot, a command line tool or even a desktop
+application with a GUI. We would only need to change the layer that
+interacts with the client - *not* the entire framework.
+
+My example may seem contrived due to the small amount of code that
+requires to complete the task of setting up a simple app calculating
+Scrabble scores, after all the algorithm computing the score more or
+less consists of a for-loop and a hashtable. But as with most
+software, complexity gets added with time. If this Scrabble calculator
+one day where to be converted into an actual Scrabble game you would
+only have to write more tests (with corresponding code of course) to
+stay decoupled.
+
+Footnotes:
+[1] I arrived at that code after iterating over red-green-refactor
+three times. I skipped that process in order to keep it short and
+concise.
+[2] DHH on TDD unit test definition:
+http://david.heinemeierhansson.com/2014/tdd-is-dead-long-live-testing.html
+[3] https://github.com/alex/what-happens-when#dns-lookup
+
+- M
+
 25/04/2014 - Studjobb
 
 While looking for a summerjob online, I realized how tedious and
