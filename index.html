@@ -203,6 +203,11 @@ lines is probably where you'd start:
                 var word = new ScrabbleWord('KCIUQ');
                 assert.equal(word.score, 20);
             }); 
+
+            it('should be 7 for the word "slow"', () => {
+                var word = new ScrabbleWord('slow');
+                assert.equal(word.score, 7);
+            }); 
         }); 
     });
 
