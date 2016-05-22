@@ -31,7 +31,7 @@ class Archive:
             return files
 
     def extract_post_from_filename(self, filename):
-        title = filename[11:-5].replace('_', ' ')
+        title = filename[11:].replace('_', ' ')
         date = datetime.strptime(filename[:10], '%d-%m-%Y') 
         content = get_file(self.directory + '/' + filename)
         return Post(title, date, content)
