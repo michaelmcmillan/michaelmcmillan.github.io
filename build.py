@@ -41,7 +41,8 @@ class Archive:
 
     def get_posts(self):
         return [self.extract_post_from_filename(post_filename) \
-            for post_filename in self.get_files_in_directory()]
+            for post_filename in self.get_files_in_directory() \
+            if post_filename.startswith('draft') == False]
 
 class Blog:
 
