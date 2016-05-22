@@ -56,15 +56,17 @@ class Blog:
     def compile(self, header, footer):
         header, body, footer = (get_file(header), '', get_file(footer))
         body += '<pre>\n'
-        for post in self.posts:
-            body += self.indent(post.format())
+        for index, post in enumerate(self.posts):
+            body += self.indent(post.format()) \
+                if index > 0 else \
+                '    ' + self.indent(post.format())
         body += '</pre>\n'
         return (header + body + footer)
 
     @staticmethod
     def indent(text, spaces=4):
         spacer = ' ' * spaces
-        return spacer + text.replace('\n', '\n' + spacer)
+        return text.replace('\n', '\n' + spacer)
 
 class RSSFeed(Blog):
 
@@ -72,7 +74,7 @@ class RSSFeed(Blog):
         header, body, footer = (get_file(header), '', get_file(footer))
         for post in self.posts:
             body += '<item>\n'
-            body += '    <title>%s</title>\n' % post.title
+            body += self.indent('<title>%s</title>\n' % post.title)
             body += self.indent('<description>\n%s\n</description>' % post.excerpt)
             body += '\n</item>\n\n'
         return (header + body + footer)
