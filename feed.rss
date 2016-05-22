@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
     <channel>
-<title>Red-Green-Refactor</title>
+<item><title>Red-Green-Refactor</title>
 <description>Last Christmas I decided to give TDD a try after being inspired from
 Gary Bernhardts screencasts at DestroyAllSoftware.com and reading
 Robert C. Martins book "Clean code". After overcoming the
-counterintuitive nature of writing tests before the actual code ...</description><title>Studjobb</title>
+counterintuitive nature of writing tests before the actual code ...</description></item><item><title>Studjobb</title>
 <description>While looking for a summerjob online, I realized how tedious and
 uneffective the whole process was. Scouring 3-5 websites in hopes of
 finding someone willing to hire a freshman is not easy. Mostly due to
 the lack of filtering.
 
-Jason Fried (founder and CEO ...</description><title>Referencing sucks</title>
+Jason Fried (founder and CEO ...</description></item><item><title>Referencing sucks</title>
 <description>Paul Graham's essays are always entertaining to read. My favourite
 essay, which I also try to keep in the back of my head whenever a
 "brilliant" idea comes along, is How to Get Startup Ideas.
 
-"The way to get startup ideas is not to try to think of startup ...</description><title>Trondheim</title>
+"The way to get startup ideas is not to try to think of startup ...</description></item><item><title>Trondheim</title>
 <description>It would be an understatement to say that I'm excited for what my time
 in Trondheim will bring. Being able to study Computer Science has been
 a long-term goal, thus being accepted at NTNU is undoubtely a huge
 achievement for me.
 
-One of the first things I  ...</description>    </channel>
+One of the first things I  ...</description></item>    </channel>
 </rss>
 

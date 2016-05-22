@@ -66,8 +66,10 @@ class RSSFeed(Blog):
     def compile(self, header, footer):
         header, body, footer = (get_file(header), '', get_file(footer))
         for post in self.posts:
+            body += '<item>'
             body += '<title>%s</title>\n' % post.title
             body += '<description>%s</description>' % post.excerpt
+            body += '</item>'
         return header + body + footer
 
 archive = Archive(flags['posts_directory'])
