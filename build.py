@@ -1,11 +1,6 @@
 from os import walk
 from sys import argv
 from datetime import datetime
-flags = {
-    'format': argv[1],
-    'posts_directory': argv[2],
-    'templates_directory': argv[3]
-}
 
 def get_file(path):
     with open(path, 'r') as data:
@@ -52,13 +47,17 @@ class Blog:
 
     def __init__(self, posts):
         self.posts = posts
+        self.sort_posts_by_date()
 
     def sort_posts_by_date(self):
         self.posts.sort(key=lambda post: post.date, reverse=True)
 
     def compile(self, header, footer):
-        header, footer = (get_file(header), get_file(footer))
-        body = '<pre>' + ''.join([post.format() for post in self.posts]) + '</pre>'
+        header, body, footer = (get_file(header), '', get_file(footer))
+        for post in self.posts:
+            body += '<pre>\n'
+            body += post.format()
+            body += '</pre>'
         return (header + body + footer)
 
 class RSSFeed(Blog):
@@ -66,22 +65,30 @@ class RSSFeed(Blog):
     def compile(self, header, footer):
         header, body, footer = (get_file(header), '', get_file(footer))
         for post in self.posts:
-            body += '<item>'
-            body += '<title>%s</title>\n' % post.title
-            body += '<description>%s</description>' % post.excerpt
-            body += '</item>'
-        return header + body + footer
+            body += '<item>\n'
+            body += '    <title>%s</title>\n' % post.title
+            body += '    <description>%s</description>\n' % post.excerpt
+            body += '</item>\n\n'
+        return (header + body + footer)
 
-archive = Archive(flags['posts_directory'])
-posts = archive.get_posts()
+if __name__ == '__main__':
 
-if flags['format'] == 'blog':
-    blog = Blog(posts)
-    blog.sort_posts_by_date()
-    compiled = blog.compile(flags['templates_directory'] + '/blog_header.html', flags['templates_directory'] + '/blog_footer.html')
-elif flags['format'] == 'feed':
-    rss_feed = RSSFeed(posts)
-    rss_feed.sort_posts_by_date()
-    compiled = rss_feed.compile(flags['templates_directory'] + '/feed_header.xml', flags['templates_directory'] + '/feed_footer.xml')
+    flags = {
+        'format': argv[1],
+        'posts_directory': argv[2],
+        'templates_directory': argv[3]
+    }
 
-print(compiled)
+    posts = Archive(flags['posts_directory']).get_posts()
+    blog, rss_feed = (Blog(posts), RSSFeed(posts))
+
+    if flags['format'] == 'blog':
+        print(blog.compile(
+            flags['templates_directory'] + '/blog_header.html',
+            flags['templates_directory'] + '/blog_footer.html'
+        ))
+    elif flags['format'] == 'feed':
+        print(rss_feed.compile(
+            flags['templates_directory'] +'/feed_header.xml',
+            flags['templates_directory'] + '/feed_footer.xml'
+        ))
