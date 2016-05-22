@@ -54,10 +54,10 @@ class Blog:
 
     def compile(self, header, footer):
         header, body, footer = (get_file(header), '', get_file(footer))
+        body += '<pre>\n'
         for post in self.posts:
-            body += '<pre>\n'
             body += post.format()
-            body += '</pre>'
+        body += '</pre>'
         return (header + body + footer)
 
 class RSSFeed(Blog):
