@@ -58,7 +58,7 @@ class Blog:
         body += '<pre>\n'
         for post in self.posts:
             body += self.indent(post.format())
-        body += '</pre>'
+        body += '</pre>\n'
         return (header + body + footer)
 
     @staticmethod
