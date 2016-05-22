@@ -1,0 +1,24 @@
+While looking for a summerjob online, I realized how tedious and
+uneffective the whole process was. Scouring 3-5 websites in hopes of
+finding someone willing to hire a freshman is not easy. Mostly due to
+the lack of filtering.
+
+Jason Fried (founder and CEO at Basecamp) said something that stuck with
+me for a while.  
+
+"[...] It's important to solve your own problems, and to recognize
+that your problem is not unique." I decided to scratch my own itch to
+see if someone else shared my annoyance. Thanks to the great
+prototyping framework Bootstrap, it didn't take long before I had
+Studjobb.no up and running.
+
+My goal was to make a simple and lazy way of receiving job postings
+for students. After some back-and-forth I ended up with a weekly
+mailing list and a simple table featuring the latest jobs. I also
+added the ability for companies to advertise their positions.
+
+So far I've only spread the word about the site through a couple of
+internal mailing lists at NTNU. The service is completely automated,
+the only thing that remains is getting the word out.
+
+- M
