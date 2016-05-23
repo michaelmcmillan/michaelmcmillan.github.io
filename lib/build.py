@@ -14,15 +14,25 @@ class Post:
         self.content = content
 
     @property
-    def headline(self):
-        return '%s - %s' % (self.date.strftime('%d-%m-%Y'), self.title)
-
-    def format(self):
-        return '%s\n\n%s\n\n' % (self.headline, self.content)
+    def pretty_date(self):
+        return self.date.strftime('%d-%m-%Y')
 
     @property
     def excerpt(self):
         return self.content[:256] + ' ...'
+
+class Template:
+
+    def __init__(self, template):
+        self.template = get_file(template)
+
+    def compile(self, variables=None):
+        variables = variables or []
+        template = self.template
+        for key in variables:
+            value = variables[key]
+            template = template.replace('{{ %s }}' % key, value)
+        return template
 
 class Archive:
 
@@ -42,7 +52,7 @@ class Archive:
     def get_posts(self):
         return [self.extract_post_from_filename(post_filename) \
             for post_filename in self.get_files_in_directory() \
-            if post_filename.startswith('draft') == False]
+            if not post_filename.startswith('draft')]
 
 class Blog:
 
@@ -53,15 +63,16 @@ class Blog:
     def sort_posts_by_date(self):
         self.posts.sort(key=lambda post: post.date, reverse=True)
 
-    def compile(self, header, footer):
-        header, body, footer = (get_file(header), '', get_file(footer))
-        body += '<pre>\n'
-        for index, post in enumerate(self.posts):
-            body += self.indent(post.format()) \
-                if index > 0 else \
-                '    ' + self.indent(post.format())
-        body += '</pre>\n'
-        return (header + body + footer)
+    def compile(self, header, body, footer):
+        header, body, footer = (Template(header), Template(body), Template(footer))
+        compiled = ''
+        for post in self.posts:
+            compiled += body.compile({
+                'title': post.title,
+                'date': post.pretty_date,
+                'content': self.indent(post.content)
+            })
+        return (header.compile() + compiled + footer.compile())
 
     @staticmethod
     def indent(text, spaces=4):
@@ -70,14 +81,15 @@ class Blog:
 
 class RSSFeed(Blog):
 
-    def compile(self, header, footer):
-        header, body, footer = (get_file(header), '', get_file(footer))
+    def compile(self, header, body, footer):
+        header, body, footer = (Template(header), Template(body), Template(footer))
+        compiled = ''
         for post in self.posts:
-            body += '<item>\n'
-            body += self.indent('<title>%s</title>\n' % post.title)
-            body += self.indent('<description>\n%s\n</description>' % post.excerpt)
-            body += '\n</item>\n\n'
-        return (header + body + footer)
+            compiled += body.compile({
+                'title': post.title,
+                'description': post.excerpt
+            })
+        return (header.compile() + compiled + footer.compile())
 
 if __name__ == '__main__':
 
@@ -92,11 +104,13 @@ if __name__ == '__main__':
 
     if flags['format'] == 'blog':
         print(blog.compile(
-            flags['templates_directory'] + '/blog_header.html',
-            flags['templates_directory'] + '/blog_footer.html'
+            flags['templates_directory'] + '/blog/header.html',
+            flags['templates_directory'] + '/blog/post.html',
+            flags['templates_directory'] + '/blog/footer.html'
         ))
     elif flags['format'] == 'feed':
         print(rss_feed.compile(
-            flags['templates_directory'] +'/feed_header.xml',
-            flags['templates_directory'] + '/feed_footer.xml'
+            flags['templates_directory'] + '/feed/header.xml',
+            flags['templates_directory'] + '/feed/item.xml',
+            flags['templates_directory'] + '/feed/footer.xml'
         ))
