@@ -10,7 +10,6 @@ TEST_DIR=test/
 INDEX=index.html
 FEED=feed.rss
 MODULES=$(PWD)/$(LIB_DIR)
-EDITOR_CONFIG=$(LIB_DIR)/vim.rc
 COMPILER=$(LIB_DIR)/build.py
 XML_TEMPLATES=$(shell find $(TEMPLATE_DIR) -type f -name '*.xml')
 HTML_TEMPLATES=$(shell find $(TEMPLATE_DIR) -type f -name '*.html')
@@ -25,7 +24,7 @@ $(FEED): $(COMPILER) $(XML_TEMPLATES) $(POSTS)
 	$(PYTHON) $(PYTHON_FLAGS) $(COMPILER) feed $(POSTS_DIR) $(TEMPLATE_DIR) > $(FEED)
 
 post:
-	$(EDITOR) $(POSTS_DIR)/draft-`date +%Y-%m-%d`-title.txt -u $(EDITOR_CONFIG)
+	$(EDITOR) $(POSTS_DIR)/draft-`date +%Y-%m-%d`-title.txt
 
 test: export PYTHONPATH=$(MODULES)
 test:
