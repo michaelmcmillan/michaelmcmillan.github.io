@@ -4,13 +4,13 @@ if [[ -n $YOU_WANT_TO_CONTACT_ME ]]; then
   echo "To say hello" | mail -s "I wanted to contact you" "email@michaelmcmillan.net"
 fi
 
+if [[ -n $YOU_WANT_TO_ME_TO_BUILD_YOU_SOFTWARE ]]; then
+  echo "These are my requirements. Can you do it?" | mail -s "Build me software" "michael@bustbyte.no"
+fi
+
 if [[ -n $YOU_WANT_TO_SEE_MY_PROJECTS ]]; then
   curl -s https://api.github.com/users/michaelmcmillan/repos\?type\=creator\&sort\=updated | \
   python3 -c "import json,sys; [print(repo['name'] + ': ' + repo['description']) for repo in json.load(sys.stdin)]"
-fi
-
-if [[ -n $YOU_WANT_TO_ME_TO_BUILD_YOU_SOFTWARE ]]; then
-  echo "These are my requirements. Can you do it?" | mail -s "Build me software" "michael@bustbyte.no"
 fi
 
 if [[ -n $YOU_WANT_TO_KNOW_IF_I_AM_HAVING_A_BAD_TIME ]]; then
