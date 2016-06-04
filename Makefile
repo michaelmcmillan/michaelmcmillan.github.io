@@ -1,6 +1,7 @@
 EDITOR=$(shell which vi)
 PYTHON=$(shell which python3)
 POSTS=$(shell find $(POSTS_DIR) -type f -name '*')
+PYTHON_FLAGS=-B
 LIB_DIR=lib/
 POSTS_DIR=posts/
 TEMPLATE_DIR=templates/
@@ -14,10 +15,10 @@ HTML_TEMPLATES=$(shell find $(TEMPLATE_DIR) -type f -name '*.html')
 all: $(INDEX) $(FEED)
 
 $(INDEX): $(COMPILER) $(HTML_TEMPLATES) $(POSTS)
-	$(PYTHON) $(COMPILER) blog $(POSTS_DIR) $(TEMPLATE_DIR) > $(INDEX)
+	$(PYTHON) $(PYTHON_FLAGS) $(COMPILER) blog $(POSTS_DIR) $(TEMPLATE_DIR) > $(INDEX)
 
 $(FEED): $(COMPILER) $(XML_TEMPLATES) $(POSTS)
-	$(PYTHON) $(COMPILER) feed $(POSTS_DIR) $(TEMPLATE_DIR) > $(FEED)
+	$(PYTHON) $(PYTHON_FLAGS) $(COMPILER) feed $(POSTS_DIR) $(TEMPLATE_DIR) > $(FEED)
 
 post:
 	$(EDITOR) $(POSTS_DIR)/draft-`date +%Y-%m-%d`-title.txt -u $(EDITOR_CONFIG)
