@@ -1,4 +1,5 @@
 from template import Template
+
 class Blog:
 
     def __init__(self, posts):
