@@ -2,6 +2,17 @@
 <rss version="2.0">
     <channel>
         <item>
+            <title>The most provocative algorithm ever made</title>
+            <description>
+                You'd think that playing music without skippping would be something
+users would demand from Spotify. Seriosuly, how can can it be to get
+this right? An analog record player does this without missing a beat
+(pun belabored). 
+
+However, judging by the sheer r ...
+            </description>
+        </item>
+        <item>
             <title>Red-Green-Refactor</title>
             <description>
                 Last Christmas I decided to give TDD a try after being inspired from

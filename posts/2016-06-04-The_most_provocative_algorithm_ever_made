@@ -1,0 +1,100 @@
+You'd think that playing music without skippping would be something
+users would demand from Spotify. Seriosuly, how can can it be to get
+this right? An analog record player does this without missing a beat
+(pun belabored). 
+
+However, judging by the sheer rage ciculating forums and comment
+sections online, it seems their users are orders of magnitude more
+upset over their shuffe algorithm.
+
+These are some of the comments in an ascending order of rage. 
+
+    "For the past couple of weeks I'll skip the same song repeated 1-2
+    in a string of about 10 songs, out of 4000+ from my starred list."
+
+    "I've had the same song from my 1,100 track starred list play
+    twice in my 35 minute commute."
+
+    "Just did a quick test and my playlist of 48 tracks will only play
+    10 of the same songs over and over again and none of the other
+    songs."
+
+    "I've noticed this and am convinced that random isn't random. I
+    imagine their random is actually a profit maximization model."
+
+    "I listen to playlists with about 100 songs and with shuffle on,
+    it will regularly repeat songs and only play a select number of
+    songs instead of going through the whole playlist. This is with
+    repeat off. A song will literally repeat after it has just played
+    for goodness sake, something isn't right here.."
+
+    "Are you fucking kidding me spotify? This whole article? How about
+    another is played a second time! I've had premium over a year. You
+    guys are ass."
+
+So what is going on? At first I chalked this up to the Gamblers
+Fallacy [1].  WIRED wrote a brilliant article explaining why true
+randomness is clustered, and not evenly distributed like most people
+imagine. This is the same reason why the British mistakenly assumed
+that the Germans had an exceptionally good aim with their V-1 flying
+bombs during World War II [2].
+
+With that said, I have a hard time seeing how the engineers at Spotify
+could mess this up. Shuffle is basically self-explanatory, especially
+if you've ever held a deck of cards. To shuffle a playlist you simply
+change the order of the songs randomly. 
+
+I rarely activate shuffle on my own playlists, which made it hard to
+confirm the alleged shortcomings above. Fortunately it is quite easy
+to interact with the user interface by using AppleScript.
+
+    #!/usr/bin/env bash
+
+    function spotify {
+        osascript -e "tell application \"Spotify\" to $*"
+    }
+
+    function play_all_the_songs {
+        for i in {1..100}
+        do
+            spotify next track
+            ARTIST=`spotify artist of current track`
+            TRACK=`spotify name of current track`
+            printf "%s - %s\n" "$ARTIST" "$TRACK"
+        done
+    }
+
+    if [[ $1 = "continous" ]]; then
+        spotify set shuffling to false
+    elif [[ $1 = "shuffle" ]]; then
+        spotify set shuffling to true
+    fi
+
+    play_all_the_songs
+
+The script above pesumes that you have Spotify running and a playlist
+containg 100 unique songs opened. It plays through the entire playlist
+and writes the name of the artist and the song name of the current
+track to stdout. The first argument determines if shuffle should be
+activated or not.
+
+    $ ./listen-through-playlist.sh continous
+    Paolo Nutini - New Shoes
+    Radiohead - Creep
+    The Cars - Drive
+    Kendrick Lamar - Backseat Freestyle
+    [...]
+
+It is trivial to assert that the playlist in fact shuffles the music
+without playing any song more than once. Simply diff the output from a
+continous run against a shuffled run. They contain the same tracks.
+
+    $ diff <(./listen.sh continous | sort) <(./listen.sh shuffle | sort) --report-identical-files
+    Files /dev/fd/11 and /dev/fd/12 are identical
+    
+The claim that a song is played more than once, effectively
+duplicating it in the queue, is false. 
+
+To be continued ...
+
+- M

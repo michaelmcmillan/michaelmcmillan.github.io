@@ -6,31 +6,134 @@
     </head>
     <body>
         <pre style="font-family: monospace; white-space: pre;">
-    24-07-2015 - Red-Green-Refactor                                                                                     #!/usr/bin/env bash
+    04-06-2016 - The most provocative algorithm ever made                                                               #!/usr/bin/env bash
                                                                                                                         
-    Last Christmas I decided to give TDD a try after being inspired from                                                if [[ -n $YOU_WANT_TO_CONTACT_ME ]]; then
-    Gary Bernhardts screencasts at DestroyAllSoftware.com and reading                                                     echo "To say hello" | mail -s "I wanted to contact you" "email@michaelmcmillan.net"
-    Robert C. Martins book "Clean code". After overcoming the                                                           fi
-    counterintuitive nature of writing tests before the actual code, I                                                  
-    discovered that TDD improves my productivity and overall confidence in                                              if [[ -n $YOU_WANT_TO_ME_TO_BUILD_YOU_SOFTWARE ]]; then
-    the code I write.                                                                                                     echo "These are my requirements. Can you do it?" | mail -s "Build me software" "michael@bustbyte.no"
-                                                                                                                        fi
-    In this post I try to define what I regard as a good test, why I like                                               
-    practicing TDD and why integration tests are not that useful. Most of                                               if [[ -n $YOU_WANT_TO_SEE_MY_PROJECTS ]]; then
-    the ideas in here are borrowed from Robert C. Martin, Gary Bernhardt,                                                 curl -s https://api.github.com/users/michaelmcmillan/repos\?type\=creator\&sort\=updated | \
-    Martin Fowler and Kent Beck.                                                                                          python3 -c "import json,sys; [print(repo['name'] + ': ' + repo['description']) for repo in json.load(sys.stdin)]"
-                                                                                                                        fi
-    # What to test?                                                                                                     
+    You'd think that playing music without skippping would be something                                                 if [[ -n $YOU_WANT_TO_CONTACT_ME ]]; then
+    users would demand from Spotify. Seriosuly, how can can it be to get                                                  echo "To say hello" | mail -s "I wanted to contact you" "email@michaelmcmillan.net"
+    this right? An analog record player does this without missing a beat                                                fi
+    (pun belabored).                                                                                                    
+                                                                                                                        if [[ -n $YOU_WANT_TO_ME_TO_BUILD_YOU_SOFTWARE ]]; then
+    However, judging by the sheer rage ciculating forums and comment                                                      echo "These are my requirements. Can you do it?" | mail -s "Build me software" "michael@bustbyte.no"
+    sections online, it seems their users are orders of magnitude more                                                  fi
+    upset over their shuffe algorithm.                                                                                  
+                                                                                                                        if [[ -n $YOU_WANT_TO_SEE_MY_PROJECTS ]]; then
+    These are some of the comments in an ascending order of rage.                                                         curl -s https://api.github.com/users/michaelmcmillan/repos\?type\=creator\&sort\=updated | \
+                                                                                                                          python3 -c "import json,sys; [print(repo['name'] + ': ' + repo['description']) for repo in json.load(sys.stdin)]"
+        "For the past couple of weeks I'll skip the same song repeated 1-2                                              fi
+        in a string of about 10 songs, out of 4000+ from my starred list."                                              
                                                                                                                         if [[ -n $YOU_WANT_TO_KNOW_IF_I_AM_HAVING_A_BAD_TIME ]]; then
-    TDD is hard. 7 months in I still find it difficult to write valuable                                                  curl -s http://www.yr.no/stad/Noreg/S%C3%B8r-Tr%C3%B8ndelag/Trondheim/Trondheim/varsel.xml | \
-    tests. This is actually the biggest challenge you'll run into when                                                    python3 -c "import sys; import xml.etree.ElementTree as ET; tree = ET.fromstring(sys.stdin.read()); \
-    starting out: What tests should should you write? There is no definite                                                sys.exit(int(tree.find('*//tabular/time/symbol').get('number')) > 3)"
-    answer, but I've found that testing code that I have a tendency to                                                  fi
-    screw up is a good way to start.  However, that's a pretty pretty                                                   
-    vague and relative heurustic so let me demonstrate what I would                                                     if [[ -n $YOU_WANT_TO_SEE_HOW_I_LOOK_IN_YOUR_TERMINAL ]]; then
-    describe as a worthless test:                                                                                         curl -s http://michaelmcmillan.net/me.ansi
-                                                                                                                        fi
-        describe('Person', () => {                                                                                      
+        "I've had the same song from my 1,100 track starred list play                                                     curl -s http://www.yr.no/stad/Noreg/S%C3%B8r-Tr%C3%B8ndelag/Trondheim/Trondheim/varsel.xml | \
+        twice in my 35 minute commute."                                                                                   python3 -c "import sys; import xml.etree.ElementTree as ET; tree = ET.fromstring(sys.stdin.read()); \
+                                                                                                                          sys.exit(int(tree.find('*//tabular/time/symbol').get('number')) > 3)"
+        "Just did a quick test and my playlist of 48 tracks will only play                                              fi
+        10 of the same songs over and over again and none of the other                                                  
+        songs."                                                                                                         if [[ -n $YOU_WANT_TO_SEE_HOW_I_LOOK_IN_YOUR_TERMINAL ]]; then
+                                                                                                                          curl -s http://michaelmcmillan.net/me.ansi
+        "I've noticed this and am convinced that random isn't random. I                                                 fi
+        imagine their random is actually a profit maximization model."                                                  
+    
+        "I listen to playlists with about 100 songs and with shuffle on,
+        it will regularly repeat songs and only play a select number of
+        songs instead of going through the whole playlist. This is with
+        repeat off. A song will literally repeat after it has just played
+        for goodness sake, something isn't right here.."
+    
+        "Are you fucking kidding me spotify? This whole article? How about
+        another is played a second time! I've had premium over a year. You
+        guys are ass."
+    
+    So what is going on? At first I chalked this up to the Gamblers
+    Fallacy [1].  WIRED wrote a brilliant article explaining why true
+    randomness is clustered, and not evenly distributed like most people
+    imagine. This is the same reason why the British mistakenly assumed
+    that the Germans had an exceptionally good aim with their V-1 flying
+    bombs during World War II [2].
+    
+    With that said, I have a hard time seeing how the engineers at Spotify
+    could mess this up. Shuffle is basically self-explanatory, especially
+    if you've ever held a deck of cards. To shuffle a playlist you simply
+    change the order of the songs randomly. 
+    
+    I rarely activate shuffle on my own playlists, which made it hard to
+    confirm the alleged shortcomings above. Fortunately it is quite easy
+    to interact with the user interface by using AppleScript.
+    
+        #!/usr/bin/env bash
+    
+        function spotify {
+            osascript -e "tell application \"Spotify\" to $*"
+        }
+    
+        function play_all_the_songs {
+            for i in {1..100}
+            do
+                spotify next track
+                ARTIST=`spotify artist of current track`
+                TRACK=`spotify name of current track`
+                printf "%s - %s\n" "$ARTIST" "$TRACK"
+            done
+        }
+    
+        if [[ $1 = "continous" ]]; then
+            spotify set shuffling to false
+        elif [[ $1 = "shuffle" ]]; then
+            spotify set shuffling to true
+        fi
+    
+        play_all_the_songs
+    
+    The script above pesumes that you have Spotify running and a playlist
+    containg 100 unique songs opened. It plays through the entire playlist
+    and writes the name of the artist and the song name of the current
+    track to stdout. The first argument determines if shuffle should be
+    activated or not.
+    
+        $ ./listen-through-playlist.sh continous
+        Paolo Nutini - New Shoes
+        Radiohead - Creep
+        The Cars - Drive
+        Kendrick Lamar - Backseat Freestyle
+        [...]
+    
+    It is trivial to assert that the playlist in fact shuffles the music
+    without playing any song more than once. Simply diff the output from a
+    continous run against a shuffled run. They contain the same tracks.
+    
+        $ diff <(./listen.sh continous | sort) <(./listen.sh shuffle | sort) --report-identical-files
+        Files /dev/fd/11 and /dev/fd/12 are identical
+        
+    The claim that a song is played more than once, effectively
+    duplicating it in the queue, is false. 
+    
+    To be continued ...
+    
+    - M
+    
+    24-07-2015 - Red-Green-Refactor
+
+    Last Christmas I decided to give TDD a try after being inspired from
+    Gary Bernhardts screencasts at DestroyAllSoftware.com and reading
+    Robert C. Martins book "Clean code". After overcoming the
+    counterintuitive nature of writing tests before the actual code, I
+    discovered that TDD improves my productivity and overall confidence in
+    the code I write.
+    
+    In this post I try to define what I regard as a good test, why I like
+    practicing TDD and why integration tests are not that useful. Most of
+    the ideas in here are borrowed from Robert C. Martin, Gary Bernhardt,
+    Martin Fowler and Kent Beck.
+    
+    # What to test? 
+    
+    TDD is hard. 7 months in I still find it difficult to write valuable
+    tests. This is actually the biggest challenge you'll run into when
+    starting out: What tests should should you write? There is no definite
+    answer, but I've found that testing code that I have a tendency to
+    screw up is a good way to start.  However, that's a pretty pretty
+    vague and relative heurustic so let me demonstrate what I would
+    describe as a worthless test:
+    
+        describe('Person', () => {
             describe('name', () => {
                 it('should be possible to set', () => {
                     var mike  = new Person();
