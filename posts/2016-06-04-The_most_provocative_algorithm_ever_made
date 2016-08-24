@@ -72,7 +72,7 @@ to interact with the user interface by using AppleScript.
 
     play_all_the_songs
 
-The script above pesumes that you have Spotify running and a playlist
+The script above presumes that you have Spotify running and a playlist
 containg 100 unique songs opened. It plays through the entire playlist
 and writes the name of the artist and the song name of the current
 track to stdout. The first argument determines if shuffle should be
@@ -94,7 +94,5 @@ continous run against a shuffled run. They contain the same tracks.
     
 The claim that a song is played more than once, effectively
 duplicating it in the queue, is false. 
-
-To be continued ...
 
 - M
