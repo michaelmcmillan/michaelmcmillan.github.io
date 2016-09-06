@@ -9,7 +9,7 @@
     04-06-2016 - The most provocative algorithm ever made                                                               #!/usr/bin/env bash
                                                                                                                         
     You'd think that playing music without skippping would be something                                                 if [[ -n $YOU_WANT_TO_CONTACT_ME ]]; then
-    users would demand from Spotify. Seriosuly, how can can it be to get                                                  echo "To say hello" | mail -s "I wanted to contact you" "email@michaelmcmillan.net"
+    users would demand from Spotify. Seriosuly, how hard can it be to get                                                 echo "To say hello" | mail -s "I wanted to contact you" "email@michaelmcmillan.net"
     this right? An analog record player does this without missing a beat                                                fi
     (pun belabored).                                                                                                    
                                                                                                                         if [[ -n $YOU_WANT_TO_ME_TO_BUILD_YOU_SOFTWARE ]]; then
@@ -43,20 +43,21 @@
         guys are ass."
     
     So what is going on? At first I chalked this up to the Gamblers
-    Fallacy [1].  WIRED wrote a brilliant article explaining why true
+    Fallacy [1].  WIRED wrote an article explaining why true
     randomness is clustered, and not evenly distributed like most people
-    imagine. This is the same reason why the British mistakenly assumed
+    intuit. This is the same reason the Brits mistakenly assumed
     that the Germans had an exceptionally good aim with their V-1 flying
     bombs during World War II [2].
     
     With that said, I have a hard time seeing how the engineers at Spotify
     could mess this up. Shuffle is basically self-explanatory, especially
     if you've ever held a deck of cards. To shuffle a playlist you simply
-    change the order of the songs randomly. 
+    change the order of the songs randomly, just like you would when playing
+    a card game.
     
     I rarely activate shuffle on my own playlists, which made it hard to
     confirm the alleged shortcomings above. Fortunately it is quite easy
-    to interact with the user interface by using AppleScript.
+    to interact with the user interface using AppleScript.
     
         #!/usr/bin/env bash
     
@@ -103,7 +104,9 @@
         Files /dev/fd/11 and /dev/fd/12 are identical
         
     The claim that a song is played more than once, effectively
-    duplicating it in the queue, is false. 
+    duplicating it in the queue, is false. In other words, Spotify
+    is underservingly on the receiving end of a shit storm caused
+    by a failure of intution.
     
     - M
     
