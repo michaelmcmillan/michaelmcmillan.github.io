@@ -21,13 +21,13 @@ vague and relative heurustic so let me demonstrate what I would
 describe as a worthless test:
 
     describe('Person', () => {
-        describe('name', () => {
-            it('should be possible to set', () => {
-                var mike  = new Person();
-                mike.name = 'Michael';
-                assert.equal(mike.name, 'Michael');
-            });
+      describe('name', () => {
+        it('should be possible to set', () => {
+          var mike  = new Person();
+          mike.name = 'Michael';
+          assert.equal(mike.name, 'Michael');
         });
+      });
     });
 
 In order to screw up the logic that makes this test pass I would
@@ -45,34 +45,34 @@ of the Person class is enough to pass this test. Let's look at
 different example of a test I consider more valuable.
 
     describe('Person', () => {
-        describe('name', () => {
-            it('should be separated by whitespace if first and last name is set', () => {
-                var mike = new Person(); 
-                mike.firstName = 'Michael';
-                mike.lastName  = 'McMillan';
-                assert.equal(mike.name, 'Michael McMillan');
-            });
-
-            it('should only return first name if last name is not set', () => {
-                var michelle = new Person(); 
-                michelle.firstName = 'Michelle';
-                assert.equal(michelle.name, 'Michelle');
-            });
-
-            it('should only return last name if first name is not set', () => {
-                var mcLovin = new Person(); 
-                mcLovin.lastName = 'McLovin';
-                assert.equal(mcLovin.name, 'McLovin');
-            });
+      describe('name', () => {
+        it('should be separated by whitespace if first and last name is set', () => {
+          var mike = new Person(); 
+          mike.firstName = 'Michael';
+          mike.lastName  = 'McMillan';
+          assert.equal(mike.name, 'Michael McMillan');
         });
+
+        it('should only return first name if last name is not set', () => {
+          var michelle = new Person(); 
+          michelle.firstName = 'Michelle';
+          assert.equal(michelle.name, 'Michelle');
+        });
+
+        it('should only return last name if first name is not set', () => {
+          var mcLovin = new Person(); 
+          mcLovin.lastName = 'McLovin';
+          assert.equal(mcLovin.name, 'McLovin');
+        });
+      });
     });
 
 This code would pass that test [1]. 
 
     class Person {
-        get name () {
-            return ((this.firstName || '') + ' ' + (this.lastName || '')).trim();
-        }
+      get name () {
+        return ((this.firstName || '') + ' ' + (this.lastName || '')).trim();
+      }
     }
 
 Although this may seem like a no-brainer, it's not something I want my
@@ -104,18 +104,18 @@ the Person class above. Had we written an integration test instead of
 a unit test our test would probably look something like this.
 
     describe('Person', () => {
-        describe('name', () => {
-            it('should be separated by whitespace if first and last name is set', (done) => {
-                request
-                .post('http://localhost:5000/api/person')
-                .send({ firstName: 'Michael', lastName: 'McMillan' })
-                .end(function(err, res){
-                    var mike = res.request.toJSON();
-                    assert.equal(mike.name, 'Michael McMillan');
-                    done();
-                });
-            });
+      describe('name', () => {
+        it('should be separated by whitespace if first and last name is set', (done) => {
+          request
+          .post('http://localhost:5000/api/person')
+          .send({ firstName: 'Michael', lastName: 'McMillan' })
+          .end(function(err, res){
+            var mike = res.request.toJSON();
+            assert.equal(mike.name, 'Michael McMillan');
+            done();
+          });
         });
+      });
     });
 
 Although we are testing the same logic as before, we are dependent on
@@ -160,32 +160,32 @@ forced to start with writing a simple test.  Something along these
 lines is probably where you'd start: 
 
     describe('Scrabble', () => {
-        describe('score', () => {
-            it('should be 0 for empty word', () => {
-                var word = new ScrabbleWord(' ');
-                assert.equal(word.score, 0);
-            }); 
-
-            it('should be 20 for the word "quick"', () => {
-                var word = new ScrabbleWord('quick');
-                assert.equal(word.score, 20);
-            }); 
-
-            it('should be 20 for the word "quick" in capital letters', () => {
-                var word = new ScrabbleWord('QUICK');
-                assert.equal(word.score, 20);
-            }); 
-
-            it('should be 20 for the word "quick" reversed', () => {
-                var word = new ScrabbleWord('KCIUQ');
-                assert.equal(word.score, 20);
-            }); 
-
-            it('should be 7 for the word "slow"', () => {
-                var word = new ScrabbleWord('slow');
-                assert.equal(word.score, 7);
-            }); 
+      describe('score', () => {
+        it('should be 0 for empty word', () => {
+          var word = new ScrabbleWord(' ');
+          assert.equal(word.score, 0);
         }); 
+
+        it('should be 20 for the word "quick"', () => {
+          var word = new ScrabbleWord('quick');
+          assert.equal(word.score, 20);
+        }); 
+
+        it('should be 20 for the word "quick" in capital letters', () => {
+          var word = new ScrabbleWord('QUICK');
+          assert.equal(word.score, 20);
+        }); 
+
+        it('should be 20 for the word "quick" reversed', () => {
+          var word = new ScrabbleWord('KCIUQ');
+          assert.equal(word.score, 20);
+        }); 
+
+        it('should be 7 for the word "slow"', () => {
+          var word = new ScrabbleWord('slow');
+          assert.equal(word.score, 7);
+        }); 
+      }); 
     });
 
 As you can see our test is completely agnostic as to whether this is a

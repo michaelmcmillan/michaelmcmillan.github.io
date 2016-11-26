@@ -52,23 +52,23 @@ to interact with the user interface using AppleScript.
     #!/usr/bin/env bash
 
     function spotify {
-        osascript -e "tell application \"Spotify\" to $*"
+      osascript -e "tell application \"Spotify\" to $*"
     }
 
     function play_all_the_songs {
-        for i in {1..100}
-        do
-            spotify next track
-            ARTIST=`spotify artist of current track`
-            TRACK=`spotify name of current track`
-            printf "%s - %s\n" "$ARTIST" "$TRACK"
-        done
+      for i in {1..100}
+      do
+        spotify next track
+        ARTIST=`spotify artist of current track`
+        TRACK=`spotify name of current track`
+        printf "%s - %s\n" "$ARTIST" "$TRACK"
+      done
     }
 
     if [[ $1 = "continous" ]]; then
-        spotify set shuffling to false
+      spotify set shuffling to false
     elif [[ $1 = "shuffle" ]]; then
-        spotify set shuffling to true
+      spotify set shuffling to true
     fi
 
     play_all_the_songs
