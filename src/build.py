@@ -18,7 +18,6 @@ if __name__ == '__main__':
         print(blog.compile(
             flags['templates_directory'] + '/blog/header.html',
             flags['templates_directory'] + '/blog/post.html',
-            flags['templates_directory'] + '/blog/sidebar.html',
             flags['templates_directory'] + '/blog/footer.html'
         ))
     elif flags['format'] == 'feed':

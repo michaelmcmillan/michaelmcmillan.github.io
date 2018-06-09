@@ -1,5 +1,4 @@
 from template import Template
-from merger import merge
 
 class Blog:
 
@@ -10,8 +9,8 @@ class Blog:
     def sort_posts_by_date(self):
         self.posts.sort(key=lambda post: post.date, reverse=True)
 
-    def compile(self, header, body, sidebar, footer):
-        header, body, sidebar, footer = (Template(header), Template(body), Template(sidebar), Template(footer))
+    def compile(self, header, body, footer):
+        header, body, footer = (Template(header), Template(body), Template(footer))
         compiled = ''
         for post in self.posts:
             compiled += body.compile({
@@ -19,7 +18,6 @@ class Blog:
                 'date': post.pretty_date,
                 'content': self.indent(post.content)
             })
-        compiled = merge(compiled, sidebar.compile(), 120)
         return (header.compile() + compiled + footer.compile())
 
     @staticmethod
